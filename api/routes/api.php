@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,14 @@ Route::get('/', function(){
     return response()->json([
         'version' => app()->version()
     ]);
+});
+
+Route::group([
+    'controller' => AuthController::class,
+    'prefix' => 'auth'
+],function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
 });
