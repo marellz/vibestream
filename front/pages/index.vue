@@ -1,37 +1,26 @@
 <template>
   <div>
-    <h1>Hello</h1>
-    <p>App version is : {{ version ?? "--" }}</p>
-    <button @click="request">request</button>
+    <div class="w-2/3 mx-auto text-center">
+      <h1 class="text-8xl">
+        <span class="text-3xl">Welcome to</span><br>
+        <span>
+          VibeStream
+        </span>
+      </h1>
+      <x-content>
+        <p>At VibeStream, we believe in creating a vibrant and inclusive community where everyone can share their stories, connect with others, and spread good vibes. Whether you're here to make new friends, showcase your creativity, or just have a good time, VibeStream is your go-to platform for all things fun and friendly.</p>
+      </x-content>
+      <x-content>
+        <x-flex items-center justify-center class="space-x-3"> 
+          <nuxt-link to="/posts">
+            <x-button>Posts</x-button>
+          </nuxt-link>
+          <nuxt-link to="/events">
+            <x-button>Events</x-button>
+          </nuxt-link>
+        </x-flex>
+      </x-content>
+    </div>
   </div>
 </template>
-<script lang="ts" setup>
-
-// import axios from "axios"
-
-const version = ref(null);
-
-const request = async () => {
-  try {
-    const data = await $fetch("http://localhost:8000/api", {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(data.version)
-
-    version.value = data.version;
-  } catch (error) {
-    console.log({ error });
-  }
-};
-</script>
-<style scoped>
-div {
-  height: 30vh;
-  padding-top: 100px;
-  text-align: center;
-}
-</style>
+<script lang="ts" setup></script>
