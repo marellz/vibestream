@@ -27,3 +27,6 @@ key-generate:
 
 db-seed:
 	docker exec -ti vs-api php artisan db:seed
+
+restart-front:
+	docker container restart vs-front
