@@ -19,8 +19,7 @@ migrate-fresh:
 seed-db:
 	docker exec -ti vs-api php artisan db:seed
 
-reset-db:
-	migrate-fresh seed-db
+reset-db: migrate-fresh seed-db
 
 key-generate:
 	docker exec -ti vs-api php artisan key:generate

@@ -7,7 +7,7 @@ export default defineNuxtConfig({
       API_URL: process.env.API_URL,
     },
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
   postcss: {
     plugins: {
       tailwindcss: {},

@@ -3,7 +3,6 @@ import axios from "axios";
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
   const baseURL = config.public.API_URL;
-
   const api = axios.create({
     baseURL,
     timeout: 60000,
