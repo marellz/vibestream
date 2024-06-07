@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PostController;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/', function(){
+Route::get('/', function () {
     return response()->json([
         'version' => app()->version()
     ]);
@@ -28,9 +32,16 @@ Route::get('/', function(){
 Route::group([
     'controller' => AuthController::class,
     'prefix' => 'auth'
-],function () {
+], function () {
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
 });
+
+Route::group([], function () {
+    Route::resources(['posts' => PostController::class]);
+    Route::resources(['comments' => CommentController::class]);
+});
+
+Route::post('/likes', [LikeController::class, 'store']);
