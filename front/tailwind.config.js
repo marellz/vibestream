@@ -9,6 +9,9 @@ export default {
     "./error.vue",
   ],
   theme: {
+    fontFamily:{
+      sans: ['satoshi-variable', 'satoshi', 'sans-serif'],
+    },
     extend: {},
   },
   plugins: [],
