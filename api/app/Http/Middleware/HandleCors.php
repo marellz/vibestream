@@ -23,7 +23,7 @@ class HandleCors
 
         if (in_array($requestOrigin, $allowedOrigins) || $requestOrigin === env('APP_URL')) {
             $response->headers->set('Access-Control-Allow-Origin', env('FRONTEND_URL','http://localhost:3000'));
-            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Methods', config('cors.allowed_headers'));
             $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             $response->headers->set('Access-Control-Allow-Credentials', 'true');
             return $response;
