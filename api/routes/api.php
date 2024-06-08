@@ -33,6 +33,8 @@ Route::group([
     'controller' => AuthController::class,
     'prefix' => 'auth'
 ], function () {
+    Route::get('user', 'show');
+    Route::patch('user', 'update');
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');

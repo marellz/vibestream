@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Services\UsersService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -10,9 +12,23 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
-    public function __construct()
+    public function __construct(
+        private readonly UsersService $service
+    )
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    public function show ()
+    {
+        $data['user'] = Auth::user();
+        return $this->respond($data);
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        $data['updated'] = $this->service->update($request);
+        return $this->respond($data);
     }
 
     public function login(Request $request)

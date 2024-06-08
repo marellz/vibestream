@@ -1,68 +1,87 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
 import type { User } from "~/types/user";
-import type { LoginPayload, LoginResponse, RegistrationPayload } from "~/types/auth";
+import type {
+  LoginPayload,
+  LoginResponse,
+  RegistrationPayload,
+} from "~/types/auth";
 
-export const useAuthStore = defineStore("auth", 
-() => {
-  const { $api } = useNuxtApp();
-  const user = ref<User | null>();
-  const token = ref<string|null>(null)
-  const authenticated = computed(() => !!user.value);
-  const firstName = computed(()=> user.value?.name.split(' ')[0])
+export const useAuthStore = defineStore(
+  "auth",
+  () => {
+    const { $api } = useNuxtApp();
 
-  const setToken = (token: string| null) => {
-    $api.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${token}`;
-  }
+    const user = ref<User | null>();
+    const token = ref<string | null>(null);
 
-  onBeforeMount(()=> {
-    if(token.value){
-      setToken(token.value)
-    }
-  })
+    const authenticated = computed(() => !!user.value);
+    const firstName = computed(() => user.value?.name.split(" ")[0]);
 
-  const register = async (payload: RegistrationPayload) => {}
+    const setToken = (token: string | null) => {
+      $api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    };
 
-  const login = async (payload: LoginPayload) => {
-    const response: LoginResponse = await $api.post("/auth/login", payload);
-    const { user: _user, status, authorisation } = response;
+    onBeforeMount(() => {
+      if (token.value) {
+        setToken(token.value);
+      }
+    });
 
-    if (status !== "success") {
-      // handle error
-      return false;
-    }
-    // set token to $api
-    setToken(authorisation.token)
-    user.value = _user;
-    token.value = authorisation.token
+    const register = async (payload: RegistrationPayload) => {};
 
-    return true
-  };
+    const login = async (payload: LoginPayload) => {
+      const response: LoginResponse = await $api.post("/auth/login", payload);
+      const { user: _user, status, authorisation } = response;
 
-  const logout = async () => {
-    const { status } : { status: string; } = await $api.post("/auth/logout");
+      if (status !== "success") {
+        // handle error
+        return false;
+      }
+      // set token to $api
+      setToken(authorisation.token);
+      user.value = _user;
+      token.value = authorisation.token;
 
-    if (status !== "success") {
-      // handle error
-      return false;
-    }
+      return true;
+    };
 
-    // remove token
-    setToken(null)
-    user.value = null;
-    token.value = null
-  };
+    const logout = async () => {
+      try {
+        await $api.post("/auth/logout");
+      } catch (error) {
+        console.error({ logout: error });
+      } finally {
+        // remove token
+        setToken(null);
+        user.value = null;
+        token.value = null;
+      }
+    };
 
-  return {
-    authenticated,
-    user,
-    token,
-    firstName,
-    login,
-    logout,
-  };
-}, { persist: true});
+    const getUser = async () => {
+      const { user: _user }: { user: User } = await $api.get("/auth/user");
+      return _user;
+    };
+
+    const updateUser = async (payload: User) => {
+      const { updated }: { updated: boolean } = await $api.patch("/auth/user", payload);
+
+      return updated
+    };
+
+    return {
+      authenticated,
+      getUser,
+      updateUser,
+      user,
+      token,
+      firstName,
+      login,
+      logout,
+    };
+  },
+  { persist: true }
+);
 
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useAuthStore, import.meta.hot));

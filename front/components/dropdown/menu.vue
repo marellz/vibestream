@@ -1,5 +1,5 @@
 <template>
-  <div class="relative" ref="dropdown" v-bind:$attrs>
+  <div class="relative" ref="dropdown" v-bind="$attrs">
     <div>
       <button
         type="button"

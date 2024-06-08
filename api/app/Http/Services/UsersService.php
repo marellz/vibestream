@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class UsersService
 {
@@ -32,9 +33,11 @@ class UsersService
 
         return new UserResource($user);
     }
-    public function update(string $id, UpdateUserRequest $request) : bool
+
+    
+    public function update(UpdateUserRequest $request) : bool
     {
-        $user = $this->get($id);
+        $user = $this->get(Auth::id());
         return $user->update(
             $request->safe()->only([
                 'name',

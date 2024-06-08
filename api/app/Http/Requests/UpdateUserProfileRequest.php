@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class UpdateUserRequest extends FormRequest
+class UpdateUserProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::id() === $this->id;
+        return false;
     }
 
     /**
@@ -24,9 +23,6 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             //
-            'id' => 'int|required',
-            'name' => 'string|required',
-            'email' => 'email|required',
         ];
     }
 }
