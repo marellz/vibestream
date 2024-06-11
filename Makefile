@@ -24,6 +24,9 @@ reset-db: migrate-fresh seed-db
 key-generate:
 	docker exec -ti vs-api php artisan key:generate
 
+symlinks:
+	docker exec -ti vs-api ln -s /var/www/html/storage/app/uploads /var/www/html/public/uploads -rf
+
 db-seed:
 	docker exec -ti vs-api php artisan db:seed
 
