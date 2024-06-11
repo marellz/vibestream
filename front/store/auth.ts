@@ -29,7 +29,9 @@ export const useAuthStore = defineStore(
       }
       // set token to $api
       setToken(authorisation.token);
-      userStore.setUser(_user);
+      // userStore.setUser(_user);
+
+      userStore.getUser()
       token.value = authorisation.token;
 
       return true;
