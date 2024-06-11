@@ -19,6 +19,10 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name'=> $this->name,
             'email' => $this->email,
+            'bio' => $this->bio,
+            'verified' => $this->email_verified_at,
+            'phone' => $this->phone,
+            'avatar' => $this->avatar ? asset($this->avatar) : null,
         ];
     }
 }

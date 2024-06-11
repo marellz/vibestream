@@ -16,9 +16,10 @@
               <template  v-if="isAuthenticated">
                 <dropdown-menu>
                   <template #header>
-                    <UserCircleIcon class="h-5" />
+                    <img v-if="user?.avatar" :src="user?.avatar" class="h-5 w-5 rounded-full object-cover" />
+                    <UserCircleIcon v-else class="h-5" />
                     <p>
-                      {{ user?.name ?? 'no user' }}
+                      {{ user?.name ?? 'no name' }}
                     </p>
                   </template>
                   <dropdown-link to="/user/profile">
@@ -61,11 +62,12 @@
 import { useAuthStore } from "~/store/auth";
 import { BarsArrowUpIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 import { useScroll } from "@vueuse/core";
+import { useUserStore } from "~/store/user";
 
 const auth = useAuthStore();
+const userStore = useUserStore()
 const isAuthenticated = computed(() => auth.authenticated);
-const user = computed(()=> auth.user)
-const logout = () => auth.logout();
+const user = computed(()=> userStore.user)
 const links = [
   {
     path: "/posts",
@@ -84,6 +86,7 @@ const links = [
 const wrapper = ref();
 const { x, y } = useScroll(wrapper, { behavior: "smooth"});
 const pageIsScrolled = computed(() => y.value > 0);
+const logout = () => auth.logout();
 const scrollToTop = () => {
   try {
     y.value = 0;

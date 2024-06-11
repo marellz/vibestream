@@ -36,7 +36,7 @@ export default defineNuxtPlugin(() => {
     },
     function (error) {
       // todo: handle errors, somwehow
-      return Promise.reject(error);
+      return Promise.reject(error.response.data);
     }
   );
 

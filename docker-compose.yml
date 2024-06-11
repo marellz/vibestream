@@ -23,6 +23,8 @@ services:
       - "8000:80"
     volumes:
       - ./api:/var/www/html
+      - ./api/public/uploads:/var/www/public/uploads
+      - ./api/storage:/var/www/storage
     depends_on:
       - mysql
 

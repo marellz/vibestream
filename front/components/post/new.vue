@@ -18,9 +18,11 @@
 import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "~/store/auth";
 import { usePostsStore } from "~/store/posts";
+import { useUserStore } from "~/store/user";
 const auth = useAuthStore()
 const content = defineModel<string>();
 const store = usePostsStore();
+const user = useUserStore()
 const emit = defineEmits(["submit"]);
 const submit = async () => {
   if (content.value) {
@@ -31,5 +33,5 @@ const submit = async () => {
   }
 };
 
-const firstName = computed(()=> auth.user?.name.split(' ')[0])
+const firstName = computed(()=> user.firstName)
 </script>

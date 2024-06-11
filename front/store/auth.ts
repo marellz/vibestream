@@ -3,31 +3,21 @@ import type { User } from "~/types/user";
 import type {
   LoginPayload,
   LoginResponse,
-  RegistrationPayload,
 } from "~/types/auth";
+import { useUserStore } from "./user";
 
 export const useAuthStore = defineStore(
   "auth",
   () => {
     const { $api } = useNuxtApp();
+    const userStore = useUserStore();
 
-    const user = ref<User | null>();
     const token = ref<string | null>(null);
-
-    const authenticated = computed(() => !!user.value);
-    const firstName = computed(() => user.value?.name.split(" ")[0]);
+    const authenticated = computed(() => token.value !== null);
 
     const setToken = (token: string | null) => {
-      $api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      $api.defaults.headers.common["Authorization"] = `bearer ${token}`;
     };
-
-    onBeforeMount(() => {
-      if (token.value) {
-        setToken(token.value);
-      }
-    });
-
-    const register = async (payload: RegistrationPayload) => {};
 
     const login = async (payload: LoginPayload) => {
       const response: LoginResponse = await $api.post("/auth/login", payload);
@@ -39,7 +29,7 @@ export const useAuthStore = defineStore(
       }
       // set token to $api
       setToken(authorisation.token);
-      user.value = _user;
+      userStore.setUser(_user);
       token.value = authorisation.token;
 
       return true;
@@ -49,35 +39,36 @@ export const useAuthStore = defineStore(
       try {
         await $api.post("/auth/logout");
       } catch (error) {
-        console.error({ logout: error });
+        console.log("logging out");
       } finally {
         // remove token
         setToken(null);
-        user.value = null;
+        userStore.deleteUser();
         token.value = null;
       }
     };
 
-    const getUser = async () => {
-      const { user: _user }: { user: User } = await $api.get("/auth/user");
-      return _user;
+    const check = async () => {
+      const { authenticated: _auth }: { authenticated: boolean } =
+        await $api.get("/auth/check");
+      if (!_auth && token.value) {
+        logout();
+      }
     };
 
-    const updateUser = async (payload: User) => {
-      const { updated }: { updated: boolean } = await $api.patch("/auth/user", payload);
-
-      return updated
-    };
+    onBeforeMount(() => {
+      if (token.value) {
+        setToken(token.value);
+      }
+      check()
+    });
 
     return {
       authenticated,
-      getUser,
-      updateUser,
-      user,
       token,
-      firstName,
       login,
       logout,
+      check,
     };
   },
   { persist: true }

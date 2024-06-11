@@ -12,23 +12,9 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
-    public function __construct(
-        private readonly UsersService $service
-    )
+    public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    public function show ()
-    {
-        $data['user'] = Auth::user();
-        return $this->respond($data);
-    }
-
-    public function update(UpdateUserRequest $request)
-    {
-        $data['updated'] = $this->service->update($request);
-        return $this->respond($data);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'check']]);
     }
 
     public function login(Request $request)
@@ -82,6 +68,12 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    public function check()
+    {
+        $data['authenticated'] = Auth::check();
+        return $this->respond($data);
     }
 
     public function logout()

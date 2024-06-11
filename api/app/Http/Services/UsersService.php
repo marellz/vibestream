@@ -8,9 +8,16 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UsersService
 {
+    
+    public function user ()
+    {
+        return User::find(Auth::id());
+    }
+    
     public function all() : AnonymousResourceCollection
     {
         return UserResource::collection(User::all());
@@ -37,7 +44,7 @@ class UsersService
     
     public function update(UpdateUserRequest $request) : bool
     {
-        $user = $this->get(Auth::id());
+        $user = $this->user();
         return $user->update(
             $request->safe()->only([
                 'name',
@@ -51,5 +58,18 @@ class UsersService
     {
         $user = $this->get($id);
         return $user->delete();
+    }
+
+    public function deleteAvatar ()
+    {
+        $user = $this->user();
+        $file = $user->avatar;
+        if($file && Storage::exists($file)){
+            Storage::delete($file);
+        }
+
+        $updated = $user->update(['avatar' => null]);
+
+        return $updated;
     }
 }

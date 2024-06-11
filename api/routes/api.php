@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,10 +20,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('/', function () {
     return response()->json([
         'version' => app()->version()
@@ -33,12 +30,22 @@ Route::group([
     'controller' => AuthController::class,
     'prefix' => 'auth'
 ], function () {
-    Route::get('user', 'show');
-    Route::patch('user', 'update');
+    Route::get('check', 'check');
     Route::post('login', 'login');
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+});
+
+Route::group([
+    'controller' => UserController::class,
+    'prefix' => 'user',
+], function(){
+    Route::get('/', 'show');
+    Route::patch('/', 'update');
+    Route::patch('/password', 'updatePassword');
+    Route::post('/avatar', 'updateAvatar');
+    Route::delete('/avatar', 'deleteAvatar');
 });
 
 Route::group([], function () {

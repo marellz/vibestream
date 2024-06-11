@@ -1,7 +1,7 @@
 <template>
   <x-container class="w-1/2">
     <template v-if="isAuthenticated">
-      <x-title>Hello {{ auth.firstName }}!</x-title>
+      <x-title>Hello {{ userStore.firstName }}!</x-title>
       <p>Welcome back to VibeStream!</p>
     </template>
     <template v-else>
@@ -39,13 +39,17 @@
 <script lang="ts" setup>
 import { usePostsStore } from "@/store/posts";
 import { useAuthStore } from "~/store/auth";
+import { useUserStore } from "~/store/user";
+
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/vue/24/outline";
+
 const store = usePostsStore();
 const auth = useAuthStore();
+const userStore = useUserStore()
 
 const { pending } = await useAsyncData("getPosts", () => store.getPosts());
 
 const posts = computed(() => store.posts);
-const user = computed(() => auth.user);
+const user = computed(() => userStore.user);
 const isAuthenticated = computed(() => user.value && auth.authenticated);
 </script>
