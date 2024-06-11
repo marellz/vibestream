@@ -8,7 +8,7 @@
           v-model="content"
           :style="{height}"
           rows="1"
-          :placeholder="`Reply as ${auth.firstName}`"
+          :placeholder="`Reply as ${user.firstName}`"
         ></textarea>
         <x-button class="absolute right-2 z-10 border-none">
           <PaperAirplaneIcon class="h-5" />
@@ -19,8 +19,8 @@
 </template>
 <script lang="ts" setup>
 import { PaperAirplaneIcon } from "@heroicons/vue/24/outline";
-import { useAuthStore } from "~/store/auth";
 import { usePostsStore } from "~/store/posts";
+import { useUserStore } from "~/store/user";
 
 const props = defineProps<{
   postId: number;
@@ -31,7 +31,7 @@ const height = ref<string|number>("auto");
 const content = defineModel<string>();
 const emit = defineEmits(["submit"]);
 const store = usePostsStore();
-const auth = useAuthStore();
+const user = useUserStore();
 const submit = async () => {
   if (content.value?.length) {
     let success = await store.createComment({
