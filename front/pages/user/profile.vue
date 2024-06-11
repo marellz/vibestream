@@ -13,7 +13,7 @@
             </div>
           </template>
           <template #password>
-           <profile-change-password />
+            <profile-change-password />
           </template>
         </x-tabs>
       </x-content>
@@ -21,6 +21,11 @@
   </x-container>
 </template>
 <script lang="ts" setup>
+
+definePageMeta({
+  middleware: "auth",
+});
+
 const profileTabs = ref([
   {
     key: "basic-info",
@@ -35,5 +40,4 @@ const profileTabs = ref([
     label: "Password",
   },
 ]);
-
 </script>

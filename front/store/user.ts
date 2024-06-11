@@ -2,11 +2,14 @@ import type { AxiosError } from "axios";
 import { defineStore, acceptHMRUpdate } from "pinia";
 import type { RegistrationPayload } from "~/types/auth";
 import type { NewPasswordForm, User } from "~/types/user";
+import { useAuthStore } from "./auth";
 
 export const useUserStore = defineStore(
   "user",
   () => {
     const { $api } = useNuxtApp();
+    const auth = useAuthStore()
+    const router = useRouter()
 
     const user = ref<User | null>();
 
@@ -32,9 +35,18 @@ export const useUserStore = defineStore(
     };
 
     const getUser = async () => {
-      const { user: _user }: { user: User } = await $api.get("/user");
-      setUser(_user);
-      return _user;
+      try {
+        const { user: _user }: { user: User } = await $api.get("/user");
+        if(_user){
+          setUser(_user);
+          return _user;
+        }
+      } catch (error: any) {
+        if (error.message === "Unauthenticated.") {
+          await auth.logout();
+          await router.push("/auth/login");
+        }
+      }
     };
 
     const updateUser = async (payload: User) => {

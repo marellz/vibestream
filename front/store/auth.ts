@@ -1,9 +1,5 @@
 import { defineStore, acceptHMRUpdate } from "pinia";
-import type { User } from "~/types/user";
-import type {
-  LoginPayload,
-  LoginResponse,
-} from "~/types/auth";
+import type { LoginPayload, LoginResponse } from "~/types/auth";
 import { useUserStore } from "./user";
 
 export const useAuthStore = defineStore(
@@ -31,7 +27,7 @@ export const useAuthStore = defineStore(
       setToken(authorisation.token);
       // userStore.setUser(_user);
 
-      userStore.getUser()
+      userStore.getUser();
       token.value = authorisation.token;
 
       return true;
@@ -41,7 +37,6 @@ export const useAuthStore = defineStore(
       try {
         await $api.post("/auth/logout");
       } catch (error) {
-        console.log("logging out");
       } finally {
         // remove token
         setToken(null);
@@ -62,8 +57,19 @@ export const useAuthStore = defineStore(
       if (token.value) {
         setToken(token.value);
       }
-      check()
+      check();
     });
+
+    watch(
+      () => authenticated.value,
+      (auth) => {
+        const route = useRoute()
+        const router = useRouter()
+        if(!auth && route.meta.middleware === 'auth'){
+          router.push('/')
+        }
+      }
+    );
 
     return {
       authenticated,

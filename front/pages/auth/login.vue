@@ -26,8 +26,12 @@
 import { ArrowRightIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "~/store/auth";
 
+definePageMeta({
+  middleware: "guest",
+});
+
 const store = useAuthStore();
-const router = useRouter()
+const router = useRouter();
 const credentials = ref({
   email: "test@example.com",
   password: "secret",
@@ -36,7 +40,7 @@ const credentials = ref({
 const login = async () => {
   let success = await store.login(credentials.value);
   if (success) {
-      await router.push("/posts");
+    await router.push("/posts");
   }
 };
 </script>
