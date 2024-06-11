@@ -5,7 +5,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   if (authStore.authenticated) {
     return navigateTo("/");
   } else {
-    console.log("guest yeaa");
     return;
   }
 });
