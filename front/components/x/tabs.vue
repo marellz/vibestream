@@ -7,9 +7,9 @@
         class="px-3 first:pl-0 border-b -mb-px py-4"
         :class="{ 'border-b-gray-900 font-bold': activeTab === tab.key }"
       >
-        <a :href="`#${tab.key}`" @click="switchTab(tab.key)">
+        <nuxt-link :to="`?tab=${tab.key}`" @click.prevent="switchTab(tab.key)">
           {{ tab.label }}
-        </a>
+        </nuxt-link>
       </li>
     </ul>
     <div class="relative">
@@ -20,6 +20,8 @@
   </div>
 </template>
 <script lang="ts" setup>
+import type { LocationQueryValue } from 'vue-router';
+
 interface TabItem {
   key: string;
   label: string;
@@ -37,17 +39,18 @@ onMounted(() => {
     activeTab.value = props.defaultTab;
   }
 
-  if(route.hash) {
-    let tabKey = route.hash.slice(1)
+  if(route.query) {
+    let tabKey = route.query.tab?.slice(1)
     if ( props.tabs.find((t) => t.key === tabKey)) {
       activeTab.value = tabKey;
     }
   }
 });
 
-const activeTab = ref<string>(props.tabs[0].key);
+const activeTab = ref<string|LocationQueryValue[]|undefined>(props.tabs[0].key);
 
 const switchTab = (key: string) => {
+  route.query.tab = key
   activeTab.value = key;
 };
 </script>
