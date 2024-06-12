@@ -3,6 +3,9 @@ export interface User{
     name: string,
     email: string,
     avatar?: string | undefined,
+    bio?: string;
+    gender?: string,
+    phone_number?: string,
 }
 
 export interface NewPasswordForm {

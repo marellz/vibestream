@@ -12,18 +12,31 @@ use Illuminate\Support\Facades\Storage;
 
 class UsersService
 {
-    
-    public function user ()
+
+    public function user()
     {
         return User::find(Auth::id());
     }
-    
-    public function all() : AnonymousResourceCollection
+
+    public function fields ()
+    {
+        return [
+            'name',
+            'email',
+            'password',
+            'gender',
+            'phone_number',
+            'avatar',
+            'bio',
+        ];
+    }
+
+    public function all(): AnonymousResourceCollection
     {
         return UserResource::collection(User::all());
     }
 
-    public function get(string $id) : UserResource
+    public function get(string $id): UserResource
     {
         return new UserResource(User::findOrFail($id));
     }
@@ -31,40 +44,32 @@ class UsersService
     public function create(StoreUserRequest $request): UserResource
     {
         $user = User::create(
-            $request->safe()->only([
-                'name',
-                'email',
-                'password',
-            ])
+            $request->safe()->only($this->fields())
         );
 
         return new UserResource($user);
     }
 
-    
-    public function update(UpdateUserRequest $request) : bool
+
+    public function update(UpdateUserRequest $request): bool
     {
         $user = $this->user();
         return $user->update(
-            $request->safe()->only([
-                'name',
-                'email',
-                'password',
-            ])
+            $request->safe()->only($this->fields())
         );
     }
 
-    public function delete(string $id) : bool
+    public function delete(string $id): bool
     {
         $user = $this->get($id);
         return $user->delete();
     }
 
-    public function deleteAvatar ()
+    public function deleteAvatar()
     {
         $user = $this->user();
         $file = $user->avatar;
-        if($file && Storage::exists($file)){
+        if ($file && Storage::exists($file)) {
             Storage::delete($file);
         }
 
