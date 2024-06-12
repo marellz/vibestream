@@ -1,11 +1,16 @@
 <template>
   <div class="border rounded-lg p-3">
-    <h1 class="font-bold">
-      {{ user.name }}
-    </h1>
-    <p class="text-sm">
-      {{ post.created }}
-    </p>
+    <x-flex items-center class="space-x-2">
+      <user-avatar :avatar="user.avatar" />
+      <div>
+        <h1 class="font-bold">
+          {{ user.name }}
+        </h1>
+        <p class="text-sm text-gray-500">
+          {{ post.created }}
+        </p>
+      </div>
+    </x-flex>
     <div class="mt-3">
       <p class="text-lg">
         {{ post.content }}
@@ -29,8 +34,8 @@
 </template>
 <script lang="ts" setup>
 import type { Post } from "~/types/post";
-import { HeartIcon, ChatBubbleOvalLeftIcon } from "@heroicons/vue/24/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/vue/24/solid";
+import { HeartIcon, ChatBubbleOvalLeftIcon,UserIcon } from "@heroicons/vue/24/outline";
+import { HeartIcon as HeartIconSolid,   } from "@heroicons/vue/24/solid";
 import { usePostsStore  } from "~/store/posts";
 import { useAuthStore } from "~/store/auth";
 
