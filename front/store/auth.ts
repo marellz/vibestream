@@ -11,6 +11,13 @@ export const useAuthStore = defineStore(
     const token = ref<string | null>(null);
     const authenticated = computed(() => token.value !== null);
 
+    onBeforeMount(() => {
+      if (token.value) {
+        setToken(token.value);
+      }
+      check();
+    });
+
     const setToken = (token: string | null) => {
       $api.defaults.headers.common["Authorization"] = `bearer ${token}`;
     };
@@ -53,23 +60,7 @@ export const useAuthStore = defineStore(
       }
     };
 
-    onBeforeMount(() => {
-      if (token.value) {
-        setToken(token.value);
-      }
-      check();
-    });
-
-    watch(
-      () => authenticated.value,
-      (auth) => {
-        const route = useRoute()
-        const router = useRouter()
-        if(!auth && route.meta.middleware === 'auth'){
-          router.push('/')
-        }
-      }
-    );
+    
 
     return {
       authenticated,
