@@ -34,7 +34,7 @@ const store = useAuthStore();
 const router = useRouter();
 const credentials = ref({
   email: "test@example.com",
-  password: "secret",
+  password: "secret21",
 });
 
 const login = async () => {

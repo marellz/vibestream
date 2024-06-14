@@ -14,7 +14,7 @@
       :name
       :autoresize
       ref="textarea"
-      :style="{height}"
+      :style="{ height }"
       v-model="content"
     ></textarea>
 
@@ -47,7 +47,7 @@ const props = withDefaults(
 );
 
 const id = useId();
-const textarea = ref()
+const textarea = ref();
 const content = defineModel<
   string | number | readonly string[] | null | undefined
 >();
@@ -56,20 +56,24 @@ onMounted(() => {
   if (props.modelValue) {
     content.value = props.modelValue;
   }
+
+  adjustHeight();
 });
 
-const height = ref<string|number>("auto");
+const height = ref<string | number>("auto");
+const adjustHeight = () => {
+  let val = content.value
+  if (val === "" || val === null) {
+    height.value = "auto";
+  } else {
+    if (textarea.value) {
+      height.value = `${textarea.value?.scrollHeight + 2}px`;
+    }
+  }
+};
 
 watch(
   () => content.value,
-  (v2) => {
-    if(v2==='' || v2===null){
-      height.value = 'auto'
-    } else {
-      if(textarea.value){
-        height.value = `${textarea.value?.scrollHeight + 2}px`
-      }
-    }
-  }
+  (v2) => adjustHeight()
 );
 </script>
