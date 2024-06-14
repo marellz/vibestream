@@ -78,6 +78,10 @@ const links = [
     label: "Events",
   },
   {
+    path: "/followers",
+    label: "Followers",
+  },
+  {
     path: "/status",
     label: "Status",
   },

@@ -7,6 +7,7 @@ use App\Http\Requests\User\Password\UpdatePasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Http\Services\FileUploadService;
+use App\Http\Services\ProfileService;
 use App\Http\Services\UsersService;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class UserController extends Controller
 
     public function __construct(
         private readonly UsersService $service,
+        private readonly ProfileService $profileService,
         private readonly FileUploadService $fileUploadService
     ) {
         $this->middleware('auth:api');
@@ -27,11 +29,16 @@ class UserController extends Controller
 
     public function show()
     {
-        $data['user'] = new UserResource(Auth::user());
+        $data['user'] = $this->service->get(Auth::id());
         return $this->respond($data);
     }
 
-
+    public function showProfile ()
+    {
+        $data['user'] = $this->profileService->get(Auth::user()->username);
+        return $this->respond($data);
+    }
+    
     public function update(UpdateUserRequest $request)
     {
         $data['updated'] = $this->service->update($request);

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,13 +27,20 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'username' => Str::replace('.','-', fake()->userName()),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
-            'username' => Str::random(6),
+            'gender' => fake()->randomElement(
+                array(
+                'male',
+                'female',
+                'other',
+                'undisclosed')
+            ),
             'phone_number' => fake()->phoneNumber(),
-            'bio' => fake()->paragraphs($nb = 1),
+            'bio' => fake()->paragraphs(2, true),
         ];
     }
 
@@ -43,5 +52,17 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function configure()
+    {
+        return $this->afterMaking(function(User $user){
+
+        })
+        ->afterCreating(function(User $user){
+            UserProfile::factory()->create([
+                'user_id' => $user->id
+            ]);
+        });
     }
 }

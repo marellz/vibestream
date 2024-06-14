@@ -29,4 +29,10 @@ class UserProfile extends Model
         'social_urls' => 'array',
         'location' => 'array'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

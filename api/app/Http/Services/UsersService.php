@@ -50,7 +50,6 @@ class UsersService
         return new UserResource($user);
     }
 
-
     public function update(UpdateUserRequest $request): bool
     {
         $user = $this->user();

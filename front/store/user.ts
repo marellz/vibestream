@@ -1,17 +1,75 @@
-import type { AxiosError } from "axios";
 import { defineStore, acceptHMRUpdate } from "pinia";
 import type { RegistrationPayload } from "~/types/auth";
-import type { NewPasswordForm, User } from "~/types/user";
+import type { NewPasswordForm, User, UserProfile } from "~/types/user";
 import { useAuthStore } from "./auth";
+
+type RouteUsername = string | string[];
 
 export const useUserStore = defineStore(
   "user",
   () => {
     const { $api } = useNuxtApp();
-    const auth = useAuthStore()
-    const router = useRouter()
+    const auth = useAuthStore();
+    const router = useRouter();
 
     const user = ref<User | null>();
+    const userProfile = ref<UserProfile | null>();
+
+    const getMyProfile = async () => {
+      const { profile }: { profile: UserProfile } = await $api.get(
+        "/user/profile"
+      );
+      if (profile) {
+        userProfile.value = profile;
+      }
+    };
+
+    const getUserProfile = async (username: RouteUsername) => {
+      const { profile }: { profile: UserProfile } = await $api.get(
+        `/profile/${username}`
+      );
+
+      return profile;
+    };
+
+    const getFollowers = async (username: RouteUsername) => {
+      const { followers: _users }: { followers: UserProfile[] } =
+        await $api.get(`/profile/${username}/followers`);
+      if (_users.length) {
+        return _users;
+      } else {
+        return null;
+      }
+    };
+    const getFollowing = async (username: RouteUsername) => {
+      const { following: _users }: { following: UserProfile[] } =
+        await $api.get(`/profile/${username}/following`);
+      if (_users.length) {
+        return _users;
+      } else {
+        return null;
+      }
+    };
+
+    const getSuggestedFollowing = async (username: RouteUsername) => {
+      return [];
+    };
+
+    const follow = async (username: RouteUsername) => {
+      const { success }: { success: boolean } = await $api.post(
+        `/follow/${username}`,
+      );
+
+      return success ?? false;
+    };
+
+    const unfollow = async (username: RouteUsername) => {
+      const { success }: { success: boolean } = await $api.delete(
+        `/follow/${username}`
+      );
+
+      return success ?? false;
+    };
 
     const setUser = (_user: User | null) => {
       user.value = _user;
@@ -37,7 +95,7 @@ export const useUserStore = defineStore(
     const getUser = async () => {
       try {
         const { user: _user }: { user: User } = await $api.get("/user");
-        if(_user){
+        if (_user) {
           setUser(_user);
           return _user;
         }
@@ -85,7 +143,7 @@ export const useUserStore = defineStore(
         "/user/avatar"
       );
 
-      return deleted
+      return deleted;
     };
 
     const deleteUser = () => {
@@ -105,6 +163,13 @@ export const useUserStore = defineStore(
       updateAvatar,
       deleteUser,
       deleteAvatar,
+      getFollowers,
+      getFollowing,
+      getSuggestedFollowing,
+      getMyProfile,
+      getUserProfile,
+      follow,
+      unfollow,
     };
   },
   { persist: true }

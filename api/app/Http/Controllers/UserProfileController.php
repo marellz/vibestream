@@ -4,48 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserProfileRequest;
 use App\Http\Requests\UpdateUserProfileRequest;
+use App\Http\Services\ProfileService;
+use App\Http\Services\UsersService;
 use App\Models\UserProfile;
+use Illuminate\Http\Request;
 
 class UserProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function __construct (
+        private readonly UsersService $usersService,
+        private readonly ProfileService $profileService,
+    )
     {
-        //
+        
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreUserProfileRequest $request)
-    {
-        //
-    }
-
     /**
      * Display the specified resource.
      */
-    public function show(UserProfile $userProfile)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(UserProfile $userProfile)
-    {
-        //
+        $username = $request->username;
+        $data['profile'] = $this->profileService->get($username);
+        return $this->respond($data);
     }
 
     /**
