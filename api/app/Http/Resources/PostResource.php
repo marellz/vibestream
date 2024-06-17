@@ -29,7 +29,7 @@ class PostResource extends JsonResource
             "id" => $this->id,
             "likes" => $this->likes->count(),
             "comments" => CommentResource::collection($this->comments),
-            "user" => $this->author,
+            "user" => new UserResource($this->author),
             "content" => $this->content,
             "created" => $created->diffForHumans(),
             "liked" => $liked,
