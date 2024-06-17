@@ -15,6 +15,10 @@
 import { useUserStore } from "~/store/user";
 import type { UserProfile } from "~/types/user";
 
+definePageMeta({
+  middleware: 'auth'
+})
+
 const store = useUserStore()
 const followers = ref<UserProfile[]>([]);
 const username = computed(() => store.user?.username ?? null);
