@@ -5,7 +5,7 @@
         <x-flex class="items-baseline">
           <nuxt-link to="/" class="text-2xl font-bold">VibeStream</nuxt-link>
           <x-flex wrapper="ul" items-center class="space-x-5 ml-5">
-            <li v-for="(link, index) in links" :key="index" class="font-medium">
+            <li v-for="(link, index) in validLinks" :key="index" class="font-medium">
               <nuxt-link :to="link.path">
                 {{ link.label }}
               </nuxt-link>
@@ -13,24 +13,33 @@
           </x-flex>
           <x-flex wrapper="ul" items-center class="ml-auto">
             <li class="font-medium">
-              <template  v-if="isAuthenticated">
+              <template v-if="isAuthenticated">
                 <dropdown-menu>
                   <template #header>
-                    <img v-if="user?.avatar" :src="user?.avatar" class="h-5 w-5 rounded-full object-cover" />
+                    <img
+                      v-if="user?.avatar"
+                      :src="user?.avatar"
+                      class="h-5 w-5 rounded-full object-cover"
+                    />
                     <UserCircleIcon v-else class="h-5" />
                     <p>
-                      {{ user?.name ?? 'no name' }}
+                      {{ user?.name ?? "no name" }}
                     </p>
                   </template>
                   <dropdown-link to="/user/profile">
                     <span>My profile</span>
                   </dropdown-link>
-                  <dropdown-item class="!text-red-500" wrapper="a" href="#" @click.prevent="logout">
+                  <dropdown-item
+                    class="!text-red-500"
+                    wrapper="a"
+                    href="#"
+                    @click.prevent="logout"
+                  >
                     Logout
                   </dropdown-item>
                 </dropdown-menu>
               </template>
-              <template  v-else>
+              <template v-else>
                 <nuxt-link to="/auth/login">Login</nuxt-link>
               </template>
             </li>
@@ -65,9 +74,9 @@ import { useScroll } from "@vueuse/core";
 import { useUserStore } from "~/store/user";
 
 const auth = useAuthStore();
-const userStore = useUserStore()
+const userStore = useUserStore();
 const isAuthenticated = computed(() => auth.authenticated);
-const user = computed(()=> userStore.user)
+const user = computed(() => userStore.user);
 const links = [
   {
     path: "/posts",
@@ -80,6 +89,7 @@ const links = [
   {
     path: "/followers",
     label: "Followers",
+    requiresAuth: true,
   },
   {
     path: "/status",
@@ -87,8 +97,14 @@ const links = [
   },
 ];
 
+const validLinks = computed(() =>
+  links.filter((l) => {
+    return l.requiresAuth ? auth.authenticated : l;
+  })
+);
+
 const wrapper = ref();
-const { x, y } = useScroll(wrapper, { behavior: "smooth"});
+const { x, y } = useScroll(wrapper, { behavior: "smooth" });
 const pageIsScrolled = computed(() => y.value > 0);
 const logout = () => auth.logout();
 const scrollToTop = () => {
