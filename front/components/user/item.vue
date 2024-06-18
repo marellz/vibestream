@@ -1,7 +1,7 @@
 <template>
   <div class="border rounded-lg p-2">
-    <x-flex items-center class="space-x-3">
-      <user-avatar :avatar="user.avatar" />
+    <x-flex items-center class="space-x-2 lg:space-x-3">
+      <user-avatar class="flex-none" :avatar="user.avatar" />
       <nuxt-link :to="`/profile/${user.username}`" class="flex-auto">
         <p class="font-medium text-lg">
           {{ user.name }}
@@ -11,7 +11,7 @@
                   12 mutual followers
               </p> -->
       </nuxt-link>
-      <div class="x-flex px-5" v-if="auth.authenticated">
+      <div class="x-flex" v-if="auth.authenticated">
         <button
           v-if="user.is_following"
           type="button"

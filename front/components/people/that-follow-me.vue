@@ -2,7 +2,7 @@
   <x-title-sub>People following me</x-title-sub>
   <x-content>
     <template v-if="users && users.length">
-      <div class="grid grid-cols-3 gap-5">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         <user-item v-for="(user, index) in users" :user="user" :key="index" />
       </div>
     </template>

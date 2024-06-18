@@ -1,6 +1,6 @@
 <template>
-  <x-container>
+  <x-wrap>
     <x-title> Events </x-title>
-  </x-container>
+  </x-wrap>
 </template>
 <script lang="ts" setup></script>

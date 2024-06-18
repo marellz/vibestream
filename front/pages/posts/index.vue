@@ -1,5 +1,5 @@
 <template>
-  <x-container class="w-1/2">
+  <x-wrap>
     <template v-if="isAuthenticated">
       <x-title>Hello {{ userStore.firstName }}!</x-title>
       <p>Welcome back to VibeStream!</p>
@@ -34,7 +34,7 @@
         <p class="text-4xl">Pending</p>
       </div>
     </x-content>
-  </x-container>
+  </x-wrap>
 </template>
 <script lang="ts" setup>
 import { usePostsStore } from "@/store/posts";
