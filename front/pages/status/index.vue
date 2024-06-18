@@ -1,11 +1,11 @@
 <template>
-  <x-container>
+  <x-wrap>
     <x-title>Hello</x-title>
     <x-content>
       <p>App version is : {{ version ?? "--" }}</p>
       <x-button @click="request">request</x-button>
     </x-content>
-  </x-container>
+  </x-wrap>
 </template>
 <script lang="ts" setup>
 import { useGlobalStore } from "@/store/global";

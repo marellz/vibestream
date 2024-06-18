@@ -1,10 +1,10 @@
 <template>
   <div>
-    <ul class="flex items-baseline border-b border-b-gray-200">
+    <ul class="flex items-baseline border-b border-b-gray-200 flex-wrap lg:flex-nowrap">
       <li
         v-for="tab in tabs"
         :key="`tab-${tab.key}`"
-        class="px-3 first:pl-0 border-b -mb-px py-4"
+        class="px-3 first:pl-0 border-b -mb-px py-4 whitespace-nowrap"
         :class="{ 'border-b-gray-900 font-bold': activeTab === tab.key }"
       >
         <nuxt-link :to="`?tab=${tab.key}`" @click.prevent="switchTab(tab.key)">

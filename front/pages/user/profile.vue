@@ -1,27 +1,24 @@
 <template>
-  <x-container>
-    <div class="w-1/2 mx-auto">
-      <x-title>User profile</x-title>
-      <x-content>
-        <x-tabs :tabs="profileTabs">
-          <template #basic-info>
-            <profile-basic-information />
-          </template>
-          <template #more-info>
-            <div>
-              <profile-more-information />
-            </div>
-          </template>
-          <template #password>
-            <profile-change-password />
-          </template>
-        </x-tabs>
-      </x-content>
-    </div>
-  </x-container>
+  <x-wrap>
+    <x-title>User profile</x-title>
+    <x-content>
+      <x-tabs :tabs="profileTabs">
+        <template #basic-info>
+          <profile-basic-information />
+        </template>
+        <template #more-info>
+          <div>
+            <profile-more-information />
+          </div>
+        </template>
+        <template #password>
+          <profile-change-password />
+        </template>
+      </x-tabs>
+    </x-content>
+  </x-wrap>
 </template>
 <script lang="ts" setup>
-
 definePageMeta({
   middleware: "auth",
 });

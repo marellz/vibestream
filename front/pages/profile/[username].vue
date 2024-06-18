@@ -1,5 +1,5 @@
 <template>
-  <x-container>
+  <x-wrap>
     <div class="mx-auto lg:w-2/3 xl:w-1/2">
       <x-title>User profile</x-title>
       <x-content v-if="profile">
@@ -65,7 +65,7 @@
         </nuxt-link>
       </x-content>
     </div>
-  </x-container>
+  </x-wrap>
 </template>
 <script lang="ts" setup>
 import type { UserProfile } from "~/types/user";
