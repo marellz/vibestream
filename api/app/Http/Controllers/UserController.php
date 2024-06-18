@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateAvatarRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserProfile\UpdateAvatarRequest;
 use App\Http\Requests\User\Password\UpdatePasswordRequest;
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Http\Services\FileUploadService;
 use App\Http\Services\ProfileService;
 use App\Http\Services\UsersService;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Routing\Controllers\Middleware;
 
 class UserController extends Controller
 {
@@ -54,7 +52,7 @@ class UserController extends Controller
 
         $data['updated'] = $updated;
         $data['message'] = 'Password updated successfully';
-
+ 
         return $this->respond($data);
     }
 
