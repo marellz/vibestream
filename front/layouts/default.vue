@@ -72,8 +72,11 @@ import { useAuthStore } from "~/store/auth";
 import { BarsArrowUpIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
 import { useScroll } from "@vueuse/core";
 import { useUserStore } from "~/store/user";
-
 const auth = useAuthStore();
+
+onBeforeMount(()=> {
+  auth.initialize()
+})
 const userStore = useUserStore();
 const isAuthenticated = computed(() => auth.authenticated);
 const user = computed(() => userStore.user);
