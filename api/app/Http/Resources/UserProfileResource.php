@@ -16,49 +16,42 @@ class UserProfileResource extends UserResource
      */
     public function toArray(Request $request): array
     {
-        $user = User::find($this->id);
+        $me = Auth::id();
+        $profile = $this->profile;
+        $following = $me && $me !== $this->id ? [
+            'is_following' => $this->followers->pluck('id')->contains($me),
+            'is_followed_by' => $this->following->pluck('id')->contains($me),
+        ] : [];
 
-        if(Auth::check()){
-            $me = Auth::user();
-            $is_me = $user->is($me);
-
-            $following = [
-                'i_follow' => $user->followers->where('id', $me->id)->first() !== null,
-                'follows_me' => $user->following->where('id', $me->id)->first() !== null,
-            ];
-        } else {
-            $is_me = false;
-            $following = [];
-        } 
-       
         return array_merge([
-            'is_me'=> $is_me,
-            'id' => $user->id,
-            'name' => $user->name,
-            'username' => $user->username,
-            'email' => $user->email,
-            'bio' => $user->bio,
-            'gender' => $user->gender,
-            'verified' => $user->email_verified_at,
-            'phone_number' => $user->phone_number,
-            'avatar' => $user->avatar ? asset($user->avatar) : null,
+            'is_me' => $this->id === $me,
+            'id' => $this->id,
+            'name' => $this->name,
+            'username' => $this->username,
+            'email' => $this->email,
+            'bio' => $this->bio,
+            'gender' => $this->gender,
+            'verified' => $this->email_verified_at,
+            'phone_number' => $this->phone_number,
+            'avatar' => $this->avatar ? asset($this->avatar) : null,
 
-            'title' => $this->title,
-            'cover_photo' => $this->cover_photo,
-            'date_of_birth' => $this->date_of_birth,
-            'location' => $this->location,
-            'website' => $this->website,
-            'social_urls' => $this->social_urls,
-            'phone_number_alt' => $this->phone_number_alt,
-            'occupation' => $this->occupation,
-            'education' => $this->education,
-            'information' => $this->information,
-            'status' => $this->status,
-            'date_of_birth' => $this->date_of_birth,
-            'social_urls' => $this->social_urls,
-            'location' => $this->location,
-            'followerCount' => $user->followers->count(),
-            'followingCount' => $user->following->count(),
+            #profile
+            'title' => $profile->title,
+            'cover_photo' => $profile->cover_photo,
+            'date_of_birth' => $profile->date_of_birth,
+            'location' => $profile->location,
+            'website' => $profile->website,
+            'social_urls' => $profile->social_urls,
+            'phone_number_alt' => $profile->phone_number_alt,
+            'occupation' => $profile->occupation,
+            'education' => $profile->education,
+            'information' => $profile->information,
+            'status' => $profile->status,
+            'date_of_birth' => $profile->date_of_birth,
+            'social_urls' => $profile->social_urls,
+            'location' => $profile->location,
+            'followers_count' => $this->followers->count(),
+            'following_count' => $this->following->count(),
         ], $following);
     }
 }

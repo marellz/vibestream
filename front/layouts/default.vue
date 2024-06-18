@@ -77,6 +77,7 @@ const auth = useAuthStore();
 onBeforeMount(()=> {
   auth.initialize()
 })
+
 const userStore = useUserStore();
 const isAuthenticated = computed(() => auth.authenticated);
 const user = computed(() => userStore.user);

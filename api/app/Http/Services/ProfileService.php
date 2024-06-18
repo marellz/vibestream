@@ -2,15 +2,17 @@
 
 namespace App\Http\Services;
 
-use App\Http\Requests\StoreUserProfileRequest;
-use App\Http\Requests\UpdateUserProfileRequest;
+use App\Http\Requests\UserProfile\StoreUserProfileRequest;
+use App\Http\Requests\UserProfile\UpdateUserProfileRequest;
 use App\Http\Resources\UserProfileResource;
 use App\Models\Follower;
 use App\Models\User;
 use App\Models\UserProfile;
 use App\Rules\NoIdenticalFollow;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProfileService
 {
@@ -36,15 +38,14 @@ class ProfileService
         ];
     }
 
-    public function getUserByUsername(string $username)
+    public function get(User $user)
     {
-        return User::where('username', $username)->firstOrFail();
-    }
-
-    public function get(string $username): UserProfileResource
-    {
-        $user = User::where('username', $username)->firstOrFail();
-        return new UserProfileResource($user->profile);
+        if($user){
+            $loaded = $user->load(['profile', 'followers', 'following']);
+            return new UserProfileResource($loaded);
+        } else {
+            throw new NotFoundHttpException;
+        }
     }
 
     public function create(StoreUserProfileRequest $request): UserProfile
@@ -53,56 +54,24 @@ class ProfileService
             $request->safe()->only($this->fields())
         );
     }
-    public function update(string $id, UpdateUserProfileRequest $request): bool
+    public function update(User $user, UpdateUserProfileRequest $request): bool | NotFoundHttpException
     {
-        $UserProfile = $this->get($id);
-        return $UserProfile->update(
+        $userProfile = $user->profile;
+        if(!$userProfile){
+            throw new NotFoundHttpException();
+        }
+        return $userProfile->update(
             $request->safe()->only($this->fields())
         );
     }
 
-    public function delete(string $id): bool
+    public function delete(User $user): bool | NotFoundHttpException
     {
-        $UserProfile = $this->get($id);
-        return $UserProfile->delete();
-    }
-
-    public function followers(string $username)
-    {
-        $user = $this->getUserByUsername($username);
-        return UserProfileResource::collection($user->followers);
-    }
-
-    public function following(string $username)
-    {
-        $user = $this->getUserByUsername($username);
-        return UserProfileResource::collection($user->following);
-    }
-
-    public function follow(User $user)
-    {
-        $request = new Request();
-        $request->merge([
-            'user_id' => $user->id,
-            'follower_id' => Auth::id(),
-        ]);
-
-        $data = $request->validate([
-            'follower_id' => ['required', 'integer', 'exists:users,id'],
-            'user_id' => ['required', 'integer', 'exists:users,id', new NoIdenticalFollow]
-        ]);
-
-        $newFollow = Follower::create($data);
-        return $newFollow->exists();
-        // return $this->getUserByUsername($username)->following()->attach($following);
-    }
-
-    public function unfollow(User $user)
-    {
-    
-        return Follower::where('user_id', $user->id)
-            ->where('follower_id', Auth::id())
-            ->delete() > 0;
-        // return !! $user->following()->detach(Auth::id());/
+        $userProfile = $user->profile;
+        if($userProfile){
+            return $userProfile->delete();
+        } else {
+            throw new NotFoundHttpException();
+        }
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserProfileRequest;
-use App\Http\Requests\UpdateUserProfileRequest;
+use App\Http\Requests\UserProfile\UpdateUserProfileRequest;
 use App\Http\Services\ProfileService;
 use App\Http\Services\UsersService;
 use App\Models\UserProfile;
-use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserProfileController extends Controller
 {
@@ -22,10 +21,9 @@ class UserProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(User $user)
     {
-        $username = $request->username;
-        $data['profile'] = $this->profileService->get($username);
+        $data['profile'] = $this->profileService->get($user);
         return $this->respond($data);
     }
 
