@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/status', function () {
     return response()->json([
         'version' => app()->version()
-    ]);
+    ], 200);
 });
 
 Route::group([

@@ -1,3 +1,6 @@
 .env
 api/public/uploads
 api/.notes
+*.old
+*test*
+*Test*

@@ -8,13 +8,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Routing\Controllers\Middleware;
 
 class AuthController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'check']]);
+        return [
+            // 'auth:api',
+            new Middleware('auth:api', except : ['login', 'register']),
+        ];
+        // $this->middleware('auth:api', ['except' => ['login', 'register', 'check']]);
     }
 
     public function login(Request $request)
