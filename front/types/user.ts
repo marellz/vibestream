@@ -20,7 +20,7 @@ export interface User{
   
   export interface UserProfile extends User{
     is_me?: boolean;
-    i_follow?: boolean;
-    follows_me?: boolean;
+    is_followed_by?: boolean;
+    is_following?: boolean;
 
 }

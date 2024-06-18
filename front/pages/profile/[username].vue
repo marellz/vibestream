@@ -28,7 +28,7 @@
               <p>{{ profile[item as keyof UserProfile] }}</p>
             </x-flex>
             <div class="space-x-2 !my-4" v-if="!profile.is_me">
-              <x-button v-if="profile.i_follow" @click="unfollowUser">
+              <x-button v-if="profile.is_following" @click="unfollowUser">
                 <span>Unfollow</span>
                 <UserPlusIcon class="h-5" />
               </x-button>

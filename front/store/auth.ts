@@ -53,7 +53,7 @@ export const useAuthStore = defineStore(
       }
     };
 
-    const initialize = async () => {
+    const initialize = () => {
       if (token.value) {
         setToken(token.value);
       }

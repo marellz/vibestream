@@ -13,7 +13,7 @@
       </nuxt-link>
       <div class="x-flex px-5" v-if="auth.authenticated">
         <button
-          v-if="user.i_follow"
+          v-if="user.is_following"
           type="button"
           class="border border-transparent hover:text-red-500 hover:border-red-500 rounded p-1"
           @click="unfollow"

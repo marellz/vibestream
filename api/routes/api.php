@@ -52,19 +52,8 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'profile/{username}',
+    'prefix' => 'profile/{user:username}',
 ], function () {
-    /**
-     * get:     /profile/{id}
-     * patch:     /profile/{id}
-     * 
-     * get:     /profile/{id}/followers
-     * 
-     * get:     /profile/{id}/following
-     * post:    /profile/{id}/following
-     * delete:  /profile/{id}/following
-     * 
-     */
     Route::get('/', [UserProfileController::class, 'show']);
     Route::patch('/', [UserProfileController::class, 'update']);
 
