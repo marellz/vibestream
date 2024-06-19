@@ -11,7 +11,6 @@ class UserProfile extends Model
 
     protected $fillable = [
         'user_id',
-        'title',
         'cover_photo',
         'date_of_birth',
         'location',
@@ -20,14 +19,13 @@ class UserProfile extends Model
         'phone_number_alt',
         'occupation',
         'education',
-        'information',
         'status',
     ];
     
     protected $cast = [
         'date_of_birth' => 'datetime',
-        'social_urls' => 'array',
-        'location' => 'array'
+        'social_urls' => 'json',
+        'location' => 'json'
     ];
 
 

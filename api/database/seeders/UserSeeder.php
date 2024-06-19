@@ -14,8 +14,8 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
-        User::factory(10)->create([
-            'password' => 'secret',
+        User::factory(100)->create([
+            'password' => 'secret21',
         ]);
 
         User::factory()->create([
