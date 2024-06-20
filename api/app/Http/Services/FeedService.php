@@ -18,6 +18,10 @@ class FeedService
         //
     }
 
+    /**
+     * HELPERS
+     */
+
     public function postsQuery()
     {
         return Post::with(['author', 'likes', 'comments']);
@@ -33,31 +37,36 @@ class FeedService
         return Follower::where('follower_id', $id)->pluck('user_id');
     }
 
-    public function posts()
+
+    /**
+     * METHODS
+     */
+
+    public function posts(int $pagination)
     {
         $posts = $this->postsQuery()
-            ->paginate();
+            ->paginate($pagination);
 
         return $this->collect($posts);
     }
 
-    public function friends(int $user)
+    public function friends(int $user, int $pagination)
     {
 
         $posts = $this->postsQuery()
             ->whereIn('user_id', $this->myFollowing($user))
             ->latest();
 
-        return $this->collect($posts->paginate());
+        return $this->collect($posts->paginate($pagination));
     }
 
-    public function new(int $user)
+    public function new(int $user, int $pagination)
     {
         $posts = $this->postsQuery()
             ->whereIn('user_id', $this->myFollowing($user))
             ->latest();
 
-        return $this->collect($posts->paginate());
+        return $this->collect($posts->paginate($pagination));
     }
 
     public function popular(int $user): PostCollection

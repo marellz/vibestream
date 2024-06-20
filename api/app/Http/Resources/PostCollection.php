@@ -14,10 +14,6 @@ class PostCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
-        // dd($this);
-        // return $this
-        $this->getIterator();
         return [
             'posts' => $this->collection,
             'links' => [
@@ -25,6 +21,7 @@ class PostCollection extends ResourceCollection
                 'current_page' => $this->currentPage(),
                 'is_first_page' => $this->onFirstPage(),
                 'is_last_page' => $this->onLastPage(),
+                'last_page' => $this->lastPage(),
                 'is_empty'=> $this->isEmpty(),
                 'count' => $this->count(),
                 'total' => $this->total(),
