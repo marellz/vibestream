@@ -1,5 +1,5 @@
 <template>
-  <x-wrap>
+  <x-wrap ref="container" class="h-full overflow-auto">
     <template v-if="isAuthenticated">
       <x-title>Hello {{ userStore.firstName }}!</x-title>
       <p>Welcome back to VibeStream!</p>
@@ -27,6 +27,10 @@
 
       <hr class="my-10" />
 
+      
+
+      <feed-filter class="mb-4" v-if="isAuthenticated" @refresh="refresh" :disabled="pending"/>
+
       <div class="space-y-4" v-if="!pending">
         <post-item :data="post" v-for="post in posts" :key="post.id" />
       </div>
@@ -37,19 +41,21 @@
   </x-wrap>
 </template>
 <script lang="ts" setup>
-import { usePostsStore } from "@/store/posts";
+import { useFeedStore } from "@/store/feed";
 import { useAuthStore } from "~/store/auth";
 import { useUserStore } from "~/store/user";
 
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/vue/24/outline";
 
-const store = usePostsStore();
+const store = useFeedStore();
 const auth = useAuthStore();
 const userStore = useUserStore()
+const container = ref()
+const { pending, data: posts, refresh } = await useAsyncData("getFeed", () => store.getPosts());
 
-const { pending } = await useAsyncData("getPosts", () => store.getPosts());
-
-const posts = computed(() => store.posts);
 const user = computed(() => userStore.user);
 const isAuthenticated = computed(() => user.value && auth.authenticated);
+
+
+onMounted(refresh)
 </script>
