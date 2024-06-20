@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -40,6 +41,10 @@ class PostFactory extends Factory
                     Comment::factory()->create([
                         'post_id' => $post->id,
                         'user_id' => $u,
+                    ]);
+
+                    Like::factory(fake()->numberBetween(0, 39))->create([
+                        'post_id' => $post->id,
                     ]);
                 }
             });
