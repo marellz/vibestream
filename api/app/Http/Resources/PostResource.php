@@ -21,18 +21,19 @@ class PostResource extends JsonResource
         // return parent::toArray($request);
         $created = Carbon::create($this->created_at);
         if(Auth::check()){
-            $liked = Like::where('post_id', $this->id)->where('user_id', Auth::id())->first();
+            $liked = $this->whenLoaded('likes')->pluck('user_id')->contains(auth()->id());
         } else {
             $liked = false;
         }
+        $author = $this->whenLoaded('author')->only(['id','name','username','avatar']);
         return [
             "id" => $this->id,
             "likes" => $this->likes->count(),
-            "comments" => CommentResource::collection($this->comments),
-            "user" => new UserResource($this->author),
             "content" => $this->content,
             "created" => $created->diffForHumans(),
             "liked" => $liked,
+            "user" => $author,
+            "comment_count" => $this->comments->count(),
         ];
     }
 }
