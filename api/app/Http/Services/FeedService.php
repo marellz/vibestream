@@ -72,6 +72,7 @@ class FeedService
     public function popular(int $user): PostCollection
     {
         $posts = $this->postsQuery()
+            ->withCount(['comments','likes'])
             ->orderBy('comments_count', 'desc')
             ->orderBy('likes_count', 'desc')
             ->whereIn('user_id', $this->myFollowing($user));
