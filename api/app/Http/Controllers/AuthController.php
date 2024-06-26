@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Services\UsersService;
 use Illuminate\Http\Request;
@@ -13,7 +14,9 @@ use Illuminate\Routing\Controllers\Middleware;
 class AuthController extends Controller
 {
 
-    public function __construct()
+    public function __construct(
+        protected readonly UsersService $service
+    )
     {
         return [
             // 'auth:api',
@@ -49,29 +52,17 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
+        $user =  $this->service->create($request);
         $token = Auth::login($user);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ]);
+        $data['success'] = true;
+        $data['authorisation'] = [
+            'token' => $token,
+            'type' => 'bearer',
+        ];
+        return $this->respond($data);
+
     }
 
     public function check()

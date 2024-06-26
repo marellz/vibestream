@@ -62,6 +62,13 @@ Route::group([
 
 Route::group([
     'controller' => FollowerController::class,
+    'prefix' => 'user'
+], function(){
+    Route::get('/suggestions', 'suggestions');
+});
+
+Route::group([
+    'controller' => FollowerController::class,
     'prefix' => 'follow/{user:username}'
 ], function () {
     Route::post('/', [FollowerController::class, 'store']);

@@ -18,6 +18,11 @@ class FollowService {
         return $user->with(['followers', 'profile'])->first();
     }
 
+    public function suggestions (User $user)
+    {
+        // todo: get users according to interests
+        return User::inRandomOrder()->limit(15)->get();
+    }
 
     public function followers(User $user)
     {

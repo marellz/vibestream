@@ -21,6 +21,12 @@ class FollowerController extends Controller
         $this->middleware('auth:api', ['except' => ['followers', 'following']]);
     }
 
+    public function suggestions()
+    {
+        $data['following'] = $this->followService->suggestions(auth()->user());
+        return $this->respond($data);
+    }
+
     public function followers(User $user)
     {
         $data['followers'] = $this->followService->followers($user);

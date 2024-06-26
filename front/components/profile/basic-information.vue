@@ -17,7 +17,7 @@
         label="Gender"
         placeholder="Select your gender"
         v-model="form.gender"
-        :options="genderOptions"
+        :options="options.genders"
       ></form-select>
       <form-textarea label="Bio" placeholder="A little something about you" v-model="form.bio"></form-textarea>
       <x-flex class="justify-end">
@@ -29,6 +29,8 @@
 <script lang="ts" setup>
 import type { User } from "~/types/user";
 import { useUserStore } from "~/store/user";
+import { useOnboardingStore } from '~/store/onboarding'
+const options = useOnboardingStore()
 
 const store = useUserStore();
 
@@ -43,25 +45,6 @@ const getUser = async () => {
   let user = await store.getUser();
   form.value = user;
 };
-
-const genderOptions = ref([
-  {
-    label: 'Male',
-    value: 'male'
-  },
-  {
-    label: 'Female',
-    value: 'female'
-  },
-  {
-    label: 'Other',
-    value: 'other'
-  },
-  {
-    label: 'Prefer not to say',
-    value: 'undisclosed'
-  },
-])
 
 onMounted(getUser);
 </script>

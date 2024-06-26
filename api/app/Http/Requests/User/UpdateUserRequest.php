@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
@@ -13,7 +15,8 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::id() === $this->id;
+            // return Auth::id() === $this->id;
+        return Auth::check();
     }
 
     /**
@@ -25,14 +28,13 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             //
-            'id' => 'int|required',
-            'username' => ['string','required','unique', Rule::unique('username')->ignore($this->user)],
-            'name' => 'string|required',
-            'email' => 'email|required',
-            'password' => 'hashed|sometimes',
-            'gender' => 'sometimes|string',
-            'phone_number' => 'sometimes|string',
-            'bio' => 'sometimes|string',
+            'id' => 'int|sometimes',
+            'username' => ['string','sometimes', Rule::unique('users')->ignore($this->id)],
+            'name' => 'string|sometimes',
+            'email' => 'email|sometimes',
+            'gender' => 'sometimes|string|nullable',
+            'phone_number' => 'sometimes|string|nullable',
+            'bio' => 'sometimes|string|nullable',
         ];
     }
 }

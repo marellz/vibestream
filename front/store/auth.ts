@@ -12,7 +12,9 @@ export const useAuthStore = defineStore(
     const authenticated = computed(() => token.value !== null);
 
     const setToken = (token: string | null) => {
-      $api.defaults.headers.common["Authorization"] = `bearer ${token}`;
+      if(token !== null){
+        $api.defaults.headers.common["Authorization"] = `bearer ${token}`;
+      }
     };
 
     const login = async (payload: LoginPayload) => {
@@ -28,8 +30,6 @@ export const useAuthStore = defineStore(
       // userStore.setUser(_user);
 
       userStore.getUser();
-      token.value = authorisation.token;
-
       return true;
     };
 
@@ -69,6 +69,7 @@ export const useAuthStore = defineStore(
       logout,
       check,
       initialize,
+      setToken,
     };
   },
   { persist: true }
