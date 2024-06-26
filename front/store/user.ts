@@ -107,7 +107,7 @@ export const useUserStore = defineStore(
       }
     };
 
-    const updateUser = async (payload: User) => {
+    const updateUser = async (payload: User | Partial<User>) => {
       const { updated }: { updated: boolean } = await $api.patch(
         "/user",
         payload
