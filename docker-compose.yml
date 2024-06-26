@@ -9,8 +9,8 @@ services:
       - "24678:24678"
     volumes:
       - ./front:/app
-      - /app/node_modules
-      - /app/.nuxt
+      - ./front/node_modules
+      - ./front/.nuxt
     depends_on:
       - api
   

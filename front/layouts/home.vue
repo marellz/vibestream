@@ -1,12 +1,8 @@
 <template>
-  <div class="h-[100vh] flex flex-col">
-    <main class="flex-auto min-h-[200px]">
-      <div class="flex justify-center bg-gray-50 py-8">
-        <x-logo />
-      </div>
-      <div class="h-48 bg-gray-50 pt-8">
+  <div ref="wrapper" id="wrapper" class="flex flex-col h-[100vh]">
+    <layouts-header />
+    <main class="flex-auto">
         <slot />
-      </div>
     </main>
     <layouts-footer />
   </div>

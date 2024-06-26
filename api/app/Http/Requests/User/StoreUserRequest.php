@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreUserRequest extends FormRequest
 {
@@ -23,10 +24,10 @@ class StoreUserRequest extends FormRequest
     {
         return [
             //
-            'name' => 'string|required',
-            'email' => 'string|required|email',
-            'username' => ['string', 'required', 'unique:users'],
-            'password' => 'string|min:8|max:24|confirmed|hashed',
+            'name' => 'string|required|max:255',
+            'email' => 'string|required|email|max:255|unique:users',
+            'username' => 'string|required|unique:users|max:255',
+            'password' => 'string|min:8|max:24|confirmed',
             'gender' => 'nullable|string|sometimes',
             'phone_number' => 'nullable|string|sometimes',
             'avatar' => 'nullable|string|sometimes',
@@ -36,6 +37,9 @@ class StoreUserRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-       //
+        //
+        $this->merge([
+            'username' => Str::random(12),
+        ]);
     }
 }

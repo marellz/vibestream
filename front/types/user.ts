@@ -14,6 +14,13 @@ export interface User{
     new_password?: string;
     new_password_confirmation?: string;
   }
+
+  export interface UserRegistration {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+  }
   
   export interface UserBasicForm extends User {
   }

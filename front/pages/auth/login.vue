@@ -19,6 +19,10 @@
         </x-button>
       </div>
     </form>
+
+    <div class="mt-5">
+      <p>No account? <nuxt-link class="underline" to="/auth/registration">Get started!</nuxt-link></p>
+    </div>
   </x-auth-form>
 </template>
 <script lang="ts" setup>

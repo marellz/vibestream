@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\UserProfile;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -41,13 +42,17 @@ class UsersService
         return new UserResource(User::findOrFail($id));
     }
 
-    public function create(StoreUserRequest $request): UserResource
+    public function create(StoreUserRequest $request): User
     {
         $user = User::create(
-            $request->safe()->only($this->fields())
+            $request->validated()
         );
 
-        return new UserResource($user);
+        UserProfile::create([
+            'user_id' => $user->id,
+        ]);
+
+        return $user;
     }
 
     public function update(UpdateUserRequest $request): bool
