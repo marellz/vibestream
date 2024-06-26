@@ -2,13 +2,12 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
-use App\Models\Like;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +74,13 @@ Route::group([], function () {
 });
 
 Route::post('/likes', [LikeController::class, 'store']);
+
+Route::group([
+    'prefix' => 'feed',
+    'controller' => FeedController::class,
+], function () {
+    Route::get('/default','index');
+    Route::get('/latest', 'new');
+    Route::get('/popular', 'popular');
+    Route::get('/friends', 'friends');
+});

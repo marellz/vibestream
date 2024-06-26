@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'user_id');
-            $table->string('title')->nullable();
+            $table->foreignIdFor(User::class, 'user_id')->unique();
+            $table->string('cover_photo')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->json('location')->nullable();
             $table->string('website')->nullable();
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('phone_number_alt')->nullable();
             $table->string('occupation')->nullable();
             $table->string('education')->nullable();
-            $table->string('information')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });

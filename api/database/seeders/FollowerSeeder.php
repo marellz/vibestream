@@ -16,9 +16,10 @@ class FollowerSeeder extends Seeder
     {
         //
         $users = User::inRandomOrder();
-
-        foreach ($users->take(5)->get() as $follower) {
-            foreach ($users->orderBy('id', 'desc')->take(5)->get() as $following) {
+        $follows = fake()->numberBetween(40, 80);
+        
+        foreach ($users->take($follows)->get() as $follower) {
+            foreach ($users->orderBy('id', 'desc')->take($follows)->get() as $following) {
                 # code...
                 if(!$follower->is($following)){
                     Follower::factory()->create([
