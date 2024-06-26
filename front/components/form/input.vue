@@ -7,6 +7,7 @@
     <div class="flex relative">
       <input
         class="p-3 border rounded-lg w-full"
+        :class="{'border-red-500':error}"
         :type="btnType"
         :id="id"
         :name="name"
@@ -28,9 +29,9 @@
       </button>
     </div>
 
-    <!-- <form-error v-if="error">
+    <form-error v-if="error">
       {{ error }}
-    </form-error> -->
+    </form-error>
   </x-flex>
 </template>
 <script lang="ts" setup>

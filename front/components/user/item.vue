@@ -15,25 +15,24 @@
         <button
           v-if="user.is_following"
           type="button"
-          class="border border-transparent hover:text-red-500 hover:border-red-500 rounded p-1"
+          class="text-red-500 hover:bg-red-100 px-2 py-px rounded text-sm font-medium"
           @click="unfollow"
         >
-          <UserMinusIcon class="h-6" />
+          <span>Unfollow</span>
         </button>
         <button
           v-else
           type="button"
-          class="border border-transparent hover:text-red-500 hover:border-red-500 rounded p-1"
+          class="text-blue-500 hover:bg-blue-100 px-2 py-px rounded text-sm font-medium"
           @click="follow"
         >
-          <UserPlusIcon class="h-6" />
+          <span>Follow</span>
         </button>
       </div>
     </x-flex>
   </div>
 </template>
 <script lang="ts" setup>
-import { UserMinusIcon, UserPlusIcon } from "@heroicons/vue/24/outline";
 import { useAuthStore } from "~/store/auth";
 import { useUserStore } from "~/store/user";
 import type { UserProfile } from "~/types/user";

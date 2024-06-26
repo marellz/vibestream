@@ -6,11 +6,11 @@
       :class="size"
       class="rounded-full object-cover"
     />
-    <UserIcon v-else :class="size" class="text-gray-200" />
+    <UserCircleIcon v-else :class="size" class="text-gray-200" />
   </div>
 </template>
 <script lang="ts" setup>
-import { UserIcon } from "@heroicons/vue/24/outline";
+import { UserCircleIcon } from "@heroicons/vue/24/solid";
 
 withDefaults(
   defineProps<{
