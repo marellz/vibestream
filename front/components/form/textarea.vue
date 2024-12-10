@@ -24,6 +24,8 @@
   </x-flex>
 </template>
 <script lang="ts" setup>
+import customId from '~/composables/useId';
+
 const props = withDefaults(
   defineProps<{
     label?: string;
@@ -46,7 +48,7 @@ const props = withDefaults(
   }
 );
 
-const id = useId();
+const id = customId();
 const textarea = ref();
 const content = defineModel<
   string | number | readonly string[] | null | undefined

@@ -69,9 +69,10 @@
 <script lang="ts" setup>
 import { TrashIcon, CloudArrowUpIcon } from "@heroicons/vue/24/outline";
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
+import customId from "~/composables/useId";
 import { useUserStore } from "~/store/user";
 
-const id = useId();
+const id = customId();
 const file = ref<File | null>(null);
 const store = useUserStore();
 const emit = defineEmits(["get-user"]);

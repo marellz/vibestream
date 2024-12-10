@@ -37,6 +37,7 @@
 <script lang="ts" setup>
 import { EyeIcon } from "@heroicons/vue/24/solid";
 import { onMounted } from "vue";
+import customId from "~/composables/useId";
 const props = withDefaults(
   defineProps<{
     label?: string;
@@ -57,7 +58,7 @@ const props = withDefaults(
   }
 );
 
-const id = useId();
+const id = customId();
 const model = defineModel();
 const toggled = ref<boolean>(false);
 const btnType = ref<string>(props.type);

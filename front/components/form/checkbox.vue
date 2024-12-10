@@ -17,7 +17,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-const id = useId();
+import customId from '~/composables/useId';
+
+const id = customId();
 const props = withDefaults(
   defineProps<{
     inputValue: string | number;

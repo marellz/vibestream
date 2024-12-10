@@ -33,6 +33,7 @@
 </template>
 <script lang="ts" setup>
 import { ChevronDownIcon } from "@heroicons/vue/24/solid";
+import customId from "~/composables/useId";
 const props = withDefaults(
   defineProps<{
     label?: string;
@@ -53,7 +54,7 @@ const props = withDefaults(
   }
 );
 
-const id = useId();
+const id = customId();
 const model = defineModel();
 
 onMounted(() => {
